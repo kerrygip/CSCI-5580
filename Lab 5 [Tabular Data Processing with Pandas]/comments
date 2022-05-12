@@ -1,0 +1,1 @@
+Question 5: [-5]. You'll need to automatically find unique dates and the number of requests made on each date. Here is one way you can do this log_df["Date"].value_counts().rename_axis("Date").reset_index(name="NumOfRequests")
