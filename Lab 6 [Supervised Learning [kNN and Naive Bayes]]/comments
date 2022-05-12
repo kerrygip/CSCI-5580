@@ -1,0 +1,9 @@
+
+Comments	Close
+Question 2: [-5]. ndists = dists/(np.multiply(np.sqrt(xdots), np.sqrt(ydots))).
+
+Question 8: [-2]: The problem at hand directly focuses on finding similarities between observations (images), we achieved 90% accuracy on the test set with K-NN. The dataset fits the assumptions of the K-NN classifier, i.e., a feasibly moderate sample size and a "well-cured" dataset, where every image has been pre-processed (e.g. cropped, centered).
+
+We only achieved 78% accuracy on the test set with Naive Bayes. The dataset doesn't fit the naive assumption that features are conditionally independent of one another given the class label, e.g., If we're looking at a black pixel at one of the corners, the pixels around it are also very likely to be black.
+
+Question 10: [-1]. To find the most often misclassified digit, you'll need to examine the values across the diagonal of the confusion matrix. Those are the values of digits that were correctly classified, for example, the value at 4, 4 is the count of images of the digit 4 that were classified as such. Therefore, the lowest value across the diagonal would be the digit that was most often misclassified.
