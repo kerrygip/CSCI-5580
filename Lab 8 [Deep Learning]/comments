@@ -1,0 +1,78 @@
+Question 2: [-5]. You need to display the average image for each digit. Here is one way you can do this:
+fig, ax = plt.subplots(2, 5)
+fig.set_size_inches(15, 7)
+horizontalIndex = 0; verticalIndex = 0
+for index in range(10):
+    avgImg = np.average(train_data[train_labels == index], 0)
+    ax[horizontalIndex, verticalIndex].imshow(avgImg.reshape((28,28)))
+    ax[horizontalIndex, verticalIndex].set_title('Average Digit %s' % index)
+    if verticalIndex < 4: verticalIndex += 1 
+    else: verticalIndex = 0; horizontalIndex += 1    
+plt.show()
+
+Question 6: 
+Plot 1: Training and Validation Loss:
+The value of loss for both the training and testing data started high (at 1.62 for the training data and 1.18 for the testing data) and then began to decrease after training for a number of epochs. Upon training completion, the value of loss for the training data is 0.08 and 0.32 for the testing data. One can notice that the value of loss didn't continue to decrease at the end of training; a learning curve that continues to decrease at the end of training can be indicative of a training model that was halted prematurely and can possibly be improved further.
+
+The training loss is lower than the testing loss with the exception of the value at the first iteration. The learning curve shows a good fit if:
+* The training loss plot decreases to a point of stability (which it does).
+* The plot of testing loss decreases to a point of stability (which it does) and has a small gap with the training loss (which it doesn't).
+
+Continuing to train the model will likely lead to an overfit. It's worth mentioning that the existence of such a gap between the training and testing loss suggests that the training dataset does not provide sufficient information to learn the problem, relative to the testing dataset used to evaluate it.
+
+Plot 2: Training and Validation Accuracy:
+It appears that the accuracy of the model on the testing dataset started at 0.77 and kept slightly increasing to 0.89 upon training completion. As for the accuracy of the model on the training data, it started at 0.62 and kept increasing to 0.99 at the end of training.
+
+The accuracy of the model is significantly higher on the training dataset compared to the testing dataset which again is indicative of a model overfit. The model seems to perform much better with the training dataset and is unable to perform as well with the testing dataset (the model doesn't generalize well to the testing dataset).
+
+A better fit can be achieved by introducing a dropout layer to the model, where in training a percentage of the features (0.5) is set to zero. This will lead to a model that is more robust and can lean to higher accuracies at test time.
+
+Question 9:
+1. The CNN model performed much better on the testing dataset compared to the DNN. The CNN ran with approximately 0.96 accuracy on the testing dataset, while with the DNN we only achieved 0.89 accuracy on the testing dataset. The CNN performed better because the data was reshaped to an image format (28, 28, 1) which allowed the CNN to make use of the relationship between neighboring pixels. 
+    
+2. The model that had fewer trainable parameters is the CNN with 34,826 trainable parameters. The DNN required 50,890 trainable parameters. 
+
+3. Here is the summary for the DNN model: 
+
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense_layer_1 (Dense)        (None, 64)                50240     
+_________________________________________________________________
+dense_layer_2 (Dense)        (None, 10)                650       
+=================================================================
+
+The parameters for each layer are the weights that contribute to the model's predictive power. For the DNN model above, the number of parameters for each layer is calculated by multiplying the (input  + 1 (to account for the bias)) x output since the weights are applied for each input and output. 
+
+For dense_layer_1, we have 784 as the input for this layer and 64 as the output: (784 + 1) x 64 = 50,240.
+For dense_layer_2, we have 64 as the input for this layer (the output from the previous layer) and 10 as the output: (64 + 1) x 10 = 650. 
+
+That gives a total of 50,890 trainable parameters for the model. 
+
+As for the CNN model:
+
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv_layer_1 (Conv2D)        (None, 26, 26, 32)        320       
+_________________________________________________________________
+maxpool_1 (MaxPooling2D)     (None, 13, 13, 32)        0         
+_________________________________________________________________
+conv_layer_2 (Conv2D)        (None, 11, 11, 64)        18496     
+_________________________________________________________________
+maxpool_2 (MaxPooling2D)     (None, 5, 5, 64)          0         
+_________________________________________________________________
+flatten (Flatten)            (None, 1600)              0         
+_________________________________________________________________
+dense (Dense)                (None, 10)                16010     
+=================================================================
+
+The effect of having those sliding windows (filters) that apply trainable weights over the input at each layer would be to multiply the input of each layer by the dimensions of the filter applied. Therefore, the number of parameters for each layer would become ((input x filter) + 1) x output.
+
+For the conv_layer_1, we have 1 as the input for this layer (input images were reshaped to (28, 28, 1), a 3 x 3 filter that is applied at multiple positions of the input image, and a 32 output: ((1 x 3 x 3) + 1) x 32 = 320. 
+For the conv_layer_2, we have 32 as the input for this layer (the output from the previous layer), a 3 x 3 filter that is applied at multiple positions of the image, and an output of 64: ((32 x 3 x 3) + 1) x 64 = 288 x 64 = 18,496.
+For the dense_layer, we have no filters applied at this layer, only an input of 1600 and an output of 10: (1600 + 1) x 10 = 16010. 
+
+Which gives a total of 34,826 trainable parameters for the model. 
+
+No weights are applied at the max_pool_1 and max_pool_2 layers. Those layers select the largest input from a 2 x 2 window and discard the rest of the input, therefore, the number of trainable parameters at each is 0.
+
+4. We can't say with certainty that the model with the highest number of trainable parameters will always perform better, there are other factors to consider. The benefit of having many parameters is that the model can then represent much more complicated functions than with fewer parameters, with datasets that can be represented with simple functions, a model with a relatively low number of trainable parameters would perform just as well (in our case even better) as a model that requires a larger number of trainable parameters.
