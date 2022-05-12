@@ -1,0 +1,21 @@
+Question 3: [-1]:
+# The True Positive Rate at a False Positive Rate of 0.2 is 0.96.
+for fpr in rc[0]:
+    if '{:.2f}'.format(float(fpr)) == '0.20':
+        print("The TPR at a FPR of 0.20 is {:.2f}".format(rc[1][rc[0].tolist().index(fpr)]))
+        break
+
+Question 4: [-3]: 
+# There are multiple changes that can be applied to the distribution cprob to increase the ROCAUC Score:
+#    1. Widen the distribution by increasing the value of the standard deviation (sigma). When setting the value of sigma to 3
+#       we got a ROCAUC Score of 0.96. 
+cprob = np.minimum(npr.lognormal(-4,3,10000),1.0)
+a = npr.random(cprob.shape)
+x = (a < cprob)
+print("ROCAUC Score with Standard Deviation Set to 3: %s" % roc_auc_score(x, cprob))
+#    2. Change the mean value of the distribution to 0 to allow for more representation of the second class in the dataset. 
+#       When setting the mean to 0 we got a ROCAUC Score of 0.93. 
+cprob = np.minimum(npr.lognormal(0,1,10000),1.0)
+a = npr.random(cprob.shape)
+x = (a < cprob)
+print("ROCAUC Score with Mean Set to 0: %s" % roc_auc_score(x, cprob
