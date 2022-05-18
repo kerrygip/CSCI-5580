@@ -1,0 +1,13 @@
+Question 7: [-2].
+The KMeans clustering algorithm partitioned the data into 2 clusters: 0 (colored blue), and 1 (colored orange).
+1. The members of class 0 appear to have the following characteristics: lower values of horsepower, slightly higher values of acceleration, and lower values of weight.
+2. The members of class 1 appear to be sharing the following characteristics: higher values of horsepower, slightly lower values of acceleration, and higher values of weight.
+
+It seems that horsepower and weight are more important and more helpful with cluster separation than acceleration. With higher values of K (for example 12) clusters begin to overlap and it becomes extremely difficult if not impossible to separate the clusters.
+
+VIS_K = 12
+v_data["labels"] = labels_k[VIS_K]
+sns.pairplot(data=v_data,hue="labels",plot_kws={"s":10})
+
+Question 11: [-3]: The architecture models an autoencoder that essentially reduces the size of the features vector from 768 to 16 per sample. For encoding 2 convolutional layers were defined: enc_conv_1 which has an input of 8 and applies a 3x3 filter and enc_conv_2 which has an input of 16 and applies a 3x3 filter, a reshape layer is then applied to flatten the input without affecting the batch size. The output of the dense layer is 16. 
+The dense layer is then passed for decoding. 2 UpSampling2D were defined, each doubles the dimensions of the input passed to it and each is followed by a Conv2DTranspose that performs an inverse convolution operation. In this process, the model learns the features of the data in order to compress it into a lower-dimensional representation.
